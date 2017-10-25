@@ -61,18 +61,18 @@ public class MainActivity extends AppCompatActivity {
             displayPicture(view, 1);
         } else {
             //last guess, lose game
-            if(current_guess == 10) {
+            if(current_guess == 0) {
                 displayPicture(view, 0);
                 newGame(view);
             }
 
 
             //change current guess number
-            current_guess++;
+            current_guess--;
             //change last number chosen
-            last_guess.setText(current_number);
+            last_guess.setText(String.valueOf(current_number));
             //change number of tries left
-            total_guesses.setText(current_guess); //
+            total_guesses.setText(String.valueOf(current_guess)); //
 
         }
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     //called when user presses new game
     public void newGame(View view) {
-        current_guess = 0;
+        current_guess = 10;
     }
 
     public void displayPicture(View view, int num) {
