@@ -1,16 +1,17 @@
 package com.example.emartin.donaldannoyancegame;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
 
-//picture
 //Main Screen
 public class MainActivity extends AppCompatActivity {
 
@@ -29,9 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //get a random number between 1 and 100
-        Random random_generator = new Random();
-        randomNumber = random_generator.nextInt(100) + 1;
+        randomNumber = getRandomNumber();
         currentGuess = 10;
 
         editText = (EditText) findViewById(R.id.guessed_number);
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newGame(view);
+                startNewGame(view, false);
             }
         });
     }
@@ -62,12 +61,13 @@ public class MainActivity extends AppCompatActivity {
         currentNumber = Integer.parseInt(editText.getText().toString());
 
         if(currentNumber == randomNumber) {
-            displayPicture(view, 1);
+            //displayPicture(view, 1);
+            startNewGame(view, true);
         } else {
             //last guess, lose game
-            if(currentGuess == 0) {
-                displayPicture(view, 0);
-                newGame(view);
+            if(currentGuess == 1) {
+                //displayPicture(view, 0);
+                startNewGame(view, false);
             }
 
 
@@ -90,18 +90,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //called when user presses new game
-    public void newGame(View view) {
-        //currentGuess = 10;
-        finish();
+    public void startNewGame(View view, boolean win) {
+
+        Context context = getApplicationContext();
+        String message = "";
+
+        if(win == true) {
+            message = "YOU WIN!";
+        } else {
+            message = "GAME OVER";
+        }
+
+        Toast.makeText(context,
+                message,
+                Toast.LENGTH_LONG).show();
+
+        currentGuess = 10;
+        randomNumber = getRandomNumber();
+        this.previousGuess.setText("");
+        this.totalGuesses.setText("");
+        this.clueMessage.setText("");
+        //finish();
     }
 
     public void displayPicture(View view, int num) {
-
         if(num ==1) {
             //you win
         } else {
             //you lose
         }
+    }
+
+    //get a random number between 1 and 100
+    public static int getRandomNumber() {
+
+        Random random_generator = new Random();
+        int number = random_generator.nextInt(100) + 1;
+        return number;
+
     }
 
 }
